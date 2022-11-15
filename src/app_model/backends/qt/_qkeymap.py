@@ -34,10 +34,10 @@ def mac_ctrl_meta_swapped() -> bool:
 def _mac_qmod_lookup() -> Dict[str, Qt.KeyboardModifier]:
     swapped = mac_ctrl_meta_swapped()
     return {
-        "ctrl": QMETA if swapped else QCTRL,
+        "ctrl": QCTRL if swapped else QMETA,
         "shift": Qt.KeyboardModifier.ShiftModifier,
         "alt": Qt.KeyboardModifier.AltModifier,
-        "meta": QCTRL if swapped else QMETA,
+        "meta": QMETA if swapped else QCTRL,
     }
 
 
@@ -251,18 +251,18 @@ def qmods2modelmods(modifiers: Qt.KeyboardModifier) -> KeyMod:
     if modifiers & Qt.KeyboardModifier.ControlModifier:
         swapped = MAC and mac_ctrl_meta_swapped()
         if swapped:
-            mod |= KeyMod.WinCtrl
-        else:
             mod |= KeyMod.CtrlCmd
+        else:
+            mod |= KeyMod.WinCtrl
     if modifiers & Qt.KeyboardModifier.AltModifier:
         mod |= KeyMod.Alt
     if modifiers & Qt.KeyboardModifier.MetaModifier:
         if swapped is None:
             swapped = MAC and mac_ctrl_meta_swapped()
         if swapped:
-            mod |= KeyMod.CtrlCmd
-        else:
             mod |= KeyMod.WinCtrl
+        else:
+            mod |= KeyMod.CtrlCmd
     return mod
 
 
